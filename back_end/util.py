@@ -1,7 +1,7 @@
 import math
 import datetime
 
-DIST_TOLERANCE = 0.002 # km
+DIST_TOLERANCE = 0.05 # km
 
 
 def str_to_eth_hex(s):
@@ -29,7 +29,7 @@ def distance_between_coordinates(lat1, lon1, lat2, lon2):
     lat2 = (lat2) * math.pi / 180
 
     a = math.sin(dLat/2) * math.sin(dLat/2) + math.sin(dLon/2) * math.sin(dLon/2) * math.cos(lat1) * math.cos(lat2) 
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a)) 
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
     return earthRadiusKm * c
 
 

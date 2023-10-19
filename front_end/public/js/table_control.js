@@ -69,18 +69,33 @@ function build_table(table_id, pagination_div_id) {
         } else {
             icon_html = '<span class="material-icons fs-6" data-bs-toggle="tooltip" title="Late">running_with_errors</span>'
         }
+        date = new Date(notice.ts*1000)
 
 
         let tr_html = ''
-        + `<tr class="clickable-row" id="${notice.epoch_index};${notice.input_index}">`
-        + `<td>${notice.bus_line}</td>`
-        + `<td class="text-center">${notice.ts}</td>`
-        + `<td class="text-end">${icon_html}</td>`
-        + `<td class="text-end">${notice.value}</td>`
+        + `<tr class="clickable-row" id="${notice.epoch_index};${notice.input_index};${notice.bus_line}">`
+        + `<td class="text-center">${notice.bus_line}</td>`
+        + `<td class="text-center">${date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2)+ ":" + ("0" + date.getSeconds()).slice(-2) + ", "+ date.toDateString()}</td>`
+        + `<td class="text-center">${notice.stat}</td>`
         + `</tr>`
 
         table_elem.insertAdjacentHTML("beforeend", tr_html)
-        document.getElementById(`${notice.epoch_index};${notice.input_index}`).onclick = () => {draw_notice(notice)}
+         if (notice.stat == "Confirmed") {
+            document.getElementById(`${notice.epoch_index};${notice.input_index};${notice.bus_line}`).style.backgroundColor = "#D1FFBD"
+        }else if(notice.stat == "Warn" || notice.stat == "Denied"){
+            document.getElementById(`${notice.epoch_index};${notice.input_index};${notice.bus_line}`).style.backgroundColor = "#FFD700"
+        }else{
+            document.getElementById(`${notice.epoch_index};${notice.input_index};${notice.bus_line}`).style.backgroundColor = "#FFFF4C"
+        }
+        
+        document.getElementById(`${notice.epoch_index};${notice.input_index};${notice.bus_line}`).addEventListener("mouseover", function() {
+            this.style.opacity = 0.6
+        })
+        document.getElementById(`${notice.epoch_index};${notice.input_index};${notice.bus_line}`).addEventListener("mouseout", function() {
+            this.style.opacity = 1
+        })
+
+        document.getElementById(`${notice.epoch_index};${notice.input_index};${notice.bus_line}`).onclick = () => {draw_notice(notice)}
     }    
     
     
